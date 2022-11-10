@@ -1,69 +1,30 @@
 #include <bits/stdc++.h>
+#define ll long long
 using namespace std;
+// 马可以到达的点，包括自身总共9个点，有些点可能越界走不到
+const int fx[9] = {0, -2, -1, 1, 2, 2, 1, -1, -2};
+const int fy[9] = {0, 1, 2, 2, 1, -1, -2, -2, -1};
 
-int dx[8] = {-2, -1, 1, 2, -2, -1, 1, 2};
-int dy[8] = {1, 2, 2, 1, -1, -2, -2, -1};
-int n, m, cx, cy, a[25][25], f[25][25];
-
+int bx, by, mx, my;
+ll f[25][25];
+bool h[25][25]; // 标记马能走到的点
 int main()
 {
-    cin >> n >> m >> cx >> cy;
-    // 讲cx，cy周围的点都设置为-1
-    for (int i = 0; i < 8; i++)
+    cin >> bx >> by >> mx >> my;
+    bx += 2, by += 2;   // 做偏移，以至于后面不用判断马是否在数组边界内
+    mx += 2, my += 2;   // 马的坐标也做偏移
+    f[2][1] = 1;
+    h[mx][my] = 1; 
+    for (int i = 0; i <= 8; i++)
+        h[mx+fx[i]][my+fy[i]] = 1;
+    for (int i = 2; i <= bx; i++)
     {
-        int x = cx + dx[i];
-        int y = cy + dy[i];
-        if (x >= 0 && x < n && y >= 0 && y < m)
-            a[x][y] = -1;
-    }
-    // 求从(0,0)到(n,m)的方案数
-    if (a[0][0] != -1)
-        f[0][0] = 1;
-    else
-        f[0][0] = 0;
-    for (int i = 1; i <= m; i++)
-    {
-        if (a[0][i] == -1)
-            f[0][i] = 0;
-        else
-            if (f[0][i-1] == 0)
-                f[0][i] = 0;
-            else
-                f[0][i] = 1;
-    }
-
-    for (int i = 1; i <= n; i++)
-    {
-        if (a[i][0] == -1)
-            f[i][0] = 0;
-        else
-            if (f[i-1][0] == 0)
-                f[i][0] = 0;
-            else
-                f[i][0] = 1;
-    }
-
-    for (int i = 1; i <= n; i++)
-    {
-        for (int j = 1; j <= m; j++)
+        for (int j = 2; j <= by; j++)
         {
-            if (a[i][j] == -1)
-                f[i][j] = 0;
-            else
-                f[i][j] = f[i-1][j] + f[i][j-1];       
+            if (h[i][j]) continue; // 如果被马拦住就直接跳过
+            f[i][j] = f[i - 1][j] + f[i][j - 1]; // 递推方程
         }
     }
-
-    // print f[i][j]
-    for (int i = 0; i <= n; i++)
-    {
-        for (int j = 0; j <= m; j++)
-        {
-            cout << f[i][j] << " ";
-        }
-        cout << endl;
-    }
-
-    cout << f[n][m] << endl;
+    cout << f[bx][by] << endl;
     return 0;
 }
