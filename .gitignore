@@ -28,8 +28,10 @@
 
 # Executables
 *.exe
+*.in
 *.out
 *.app
+test.cpp
 
 # Else
 *.prob
