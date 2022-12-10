@@ -38,9 +38,9 @@ int main()
             {
                 if (topo[tt[i]][j]) topo[tt[i]][j] = 0, de[j]--;
             }
-            ans++;
-        } while (top);
-    }
+        } 
+        ans++;
+    } while (top);
     cout << ans - 1 << endl;
     return 0;
 }
