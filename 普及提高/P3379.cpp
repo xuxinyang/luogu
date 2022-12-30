@@ -10,12 +10,14 @@ struct Edge
     int next;
 };
 Edge edges[maxn<<1];
+// 加边
 void add(int u, int v)
 {
     edges[++tot].to = v;
     edges[tot].next = head[u];
     head[u] = tot; 
 }
+// 求每个结点的深度
 void dfs(int u, int v)
 {
     d[u] = d[v] + 1;
@@ -30,9 +32,10 @@ void dfs(int u, int v)
         if (tmp != v) dfs(tmp, u);
     }
 }
+// 求最近公共祖先
 int lca(int u, int v)
 {
-    if (d[u] > d[v]) swap(u, v);
+    if (d[u] > d[v]) swap(u, v);    // 让v向上查找到u
     int k = log2(n);
     for (int i = k; i >= 0; i--)
     {
