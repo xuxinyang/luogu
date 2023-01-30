@@ -2,10 +2,11 @@
 #include <cstring>
 #include <iostream>
 using namespace std;
-int n, a, b;
+#define ull unsigned long long
+ull n, a, b;
 struct Num
 {
-    int l, a[30];
+    ull l, a[30];
 } ans, dp[55][55][55];
 Num operator+(Num x, Num y)
 {
@@ -25,13 +26,18 @@ Num operator+(Num x, Num y)
 }
 void print(Num x)
 {
+    if (x.l == 1 && x.a[1] == 0)
+    {
+        cout << 1 << endl;
+        return;
+    }
     for (int i = x.l; i >= 1; i--)
-        printf("%d", x.a[i]);
+        printf("%lld", x.a[i]);
     printf("\n");
 }
 int main()
 {
-    scanf("%d%d%d", &n, &a, &b);
+    scanf("%lld%lld%lld", &n, &a, &b);
     dp[0][0][0].l = dp[0][0][0].a[1] = 1;
     for (int i = 1; i <= n; i++)
         for (int j = 0; j <= a; j++)
