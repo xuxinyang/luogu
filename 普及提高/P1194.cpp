@@ -13,12 +13,18 @@ bool cmp(Edge x, Edge y)
 }
 int find(int x)
 {
-    return x == fa[x] ? x : fa[x] == find(fa[x]);
+    return x == fa[x] ? x : fa[x] = find(fa[x]);
 }
 void merge(int x, int y)
 {
     int fx = find(x), fy = find(y);
-    if (fx != fy) fa[fy] = fx;
+    if (fx != fy) fa[fx] = fy;
+}
+void add(int u, int v, int w)
+{
+    edges[++tot].u = u;
+    edges[tot].v = v;
+    edges[tot].w = w;
 }
 void kruskal()
 {
@@ -26,11 +32,11 @@ void kruskal()
     {
         if (find(edges[i].u) != find(edges[i].v))
         {
+            // cout << edges[i].u << "-->" << edges[i].v << " " << edges[i].w << endl;
             merge(edges[i].u, edges[i].v);
-            cnt++;
             ans += edges[i].w;
+            if (++cnt == b) break;
         }
-        if (cnt == b) break;
     }
 }
 int main()
@@ -41,14 +47,10 @@ int main()
         for (int j = 1; j <= b; j++)
         {
             cin >> val;
-            if (i < j && val != 0)
-                edges[++tot].w = val, edges[tot].u = i, edges[tot].v = j;
+            if (i < j && val != 0) add(i, j, val);
         }
     }
-    for (int i = 1; i <= b; i++)
-    {
-        edges[++tot].w = a, edges[tot].u = 0, edges[tot].v = i;
-    }
+    for (int i = 1; i <= b; i++) add(0, i, a);
     for (int i = 1; i <= b; i++) fa[i] = i;
     sort(edges + 1, edges + tot + 1, cmp);
     kruskal();
