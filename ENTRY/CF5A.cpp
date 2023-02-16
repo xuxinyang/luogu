@@ -1,25 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
-unordered_map<string, int> ump;
-char c, a[100];
-string s, name;
-int ans = 0;
+
 int main()
 {
-    while (c = getchar() && c != EOF)
+    int flow = 0, now = 0;
+    string s;
+
+    while (getline(cin, s))
     {
-        memset(a, '\0', sizeof(a));
-        if (c == '+') s = gets(a), ump[s] = 1;
-        else if (c == '-') s = gets(a), ump.erase(s);
+        if (s[0] == '+') now++;
+        else if (s[0] == '-') now--;
         else
-        {
-            while (c = getchar() && c != ':');
-            getchar();
-            s = gets(a);
-            ans += s.length() * ump.size();
-            cout << s << endl;
+        { 
+            for (int i = 0; i < s.size(); i++)
+            {
+                if (s[i] == ':')
+                {                                     // 找到啦！
+                    flow += (s.size() - i - 1) * now; // 将流量数加上消息的字节数×目前聊天中的人数
+                    break;                            // 并退出循环
+                }
+            }
         }
     }
-    cout << ans << endl;
+
+    cout << flow;
     return 0;
 }
