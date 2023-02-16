@@ -5,7 +5,6 @@ int main()
 {
     int flow = 0, now = 0;
     string s;
-
     while (getline(cin, s))
     {
         if (s[0] == '+') now++;
