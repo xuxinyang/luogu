@@ -57,6 +57,8 @@
     "files.associations": {
         "iostream": "cpp",
         "ostream": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp"
     }
 }

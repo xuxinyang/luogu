@@ -6,15 +6,15 @@ struct Node
 {
     int x;
     int y;
+    double distance(const Node &node)
+    {
+        return sqrt(pow(x - node.x, 2) + pow(y - node.y, 2));
+    }
 };
 Node nodes[maxn];
 int n, f[maxn];
 double dist[maxn], w[maxn][maxn], ans[maxn], maxx, minx = inf;
 string s;
-double distance(int x1, int y1, int x2, int y2)
-{
-    return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
-}
 void dfs(int i, int id)
 {
     f[i] = id;
@@ -32,7 +32,7 @@ int main()
         for (int j = 1; j < s.length(); j++)
         {
             if (s[j] == '1' || i == j)
-                w[i][j] = distance(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
+                w[i][j] = nodes[i].distance(nodes[j]);
             else
                 w[i][j] = inf;
         }
@@ -63,7 +63,7 @@ int main()
             if (f[i] != f[j])
             {
                 maxx = max(max(dist[f[i]], dist[f[j]]), 
-                ans[i] + ans[j] + distance(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y));
+                ans[i] + ans[j] + nodes[i].distance(nodes[j]));
                 minx = min(minx, maxx);
             }
         }
