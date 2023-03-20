@@ -2,8 +2,6 @@
 using namespace std;
 int n, m; // n：点数 m：边数
 int num[100001], low[100001], inde, res;
-// num：记录每个点的时间戳
-// low：能不经过父亲到达最小的编号，inde：时间戳，res：答案数量
 bool vis[100001], flag[100001]; // flag: 答案 vis：标记是否重复
 vector<int> edge[100001];       // 存图用的
 
