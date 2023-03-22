@@ -59,6 +59,7 @@
         "ostream": "cpp",
         "chrono": "cpp",
         "cmath": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "iomanip": "cpp"
     }
 }
