@@ -14,7 +14,7 @@ int main()
 {
     cin >> n;
     for (int i = 1; i <= n; i++) cin >> nodes[i].begin >> nodes[i].end;
-    sort(m+1, m+1+n, cmp);
+    sort(nodes+1, nodes+1+n, cmp);
     int begin = nodes[1].begin;
     int end = nodes[1].end;
     int ans1 = 0, ans2 = 0;
