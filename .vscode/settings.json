@@ -60,6 +60,7 @@
         "chrono": "cpp",
         "cmath": "cpp",
         "complex": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "random": "cpp"
     }
 }
