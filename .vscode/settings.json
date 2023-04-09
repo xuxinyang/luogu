@@ -61,6 +61,10 @@
         "cmath": "cpp",
         "complex": "cpp",
         "iomanip": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "regex": "cpp"
     }
 }
