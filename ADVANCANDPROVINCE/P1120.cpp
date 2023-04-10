@@ -1,55 +1,60 @@
-#include <algorithm>
-#include <cstdio>
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-const int N = 70;
-int n, a[N], cnt, maxn, maxnn;
-bool cmp(int x, int y) { return x > y; }
-bool use[N];
-inline void dfs(int ans, int sum, int goal, int now)
+
+int num[500010], maxn, minn, sum;
+
+int max(int x, int y)
 {
-    if (sum * goal == maxn)
-    {
-        printf("%d\n", goal);
+    return x > y ? x : y;
+}
+
+int min(int x, int y)
+{
+    return x > y ? y : x;
+}
+void dfs(int wait, int already, int need, int can)
+{ 
+    int i;
+    if (wait == 0)
+    { 
+        printf("%d", need); 
         exit(0);
     }
-    if (ans == goal)
+    if (already == need)
     {
-        dfs(0, sum + 1, goal, 1);
+        dfs(wait - 1, 0, need, maxn);
         return;
-    } 
-    if (goal - ans < a[cnt])
-        return;
-    for (register int i = now; i <= cnt; i++)
-        if (!use[i] && ans + a[i] <= goal)
+    }
+    for (i = can; i >= minn; i--)
+        if (num[i] && i + already <= need)
         {
-            use[i] = 1;
-            dfs(ans + a[i], sum, goal, i + 1);
-            use[i] = 0;
-            if (ans + a[i] == goal || ans == 0)
-                break;
-            while (a[i] == a[i + 1])
-                i++;
+            num[i]--;
+            dfs(wait, already + i, need, i);
+            num[i]++;
+            if (already == 0 || already + i == need)
+                return;
         }
 }
+
 int main()
 {
+    int i, j, k, m, n, temp;
     scanf("%d", &n);
-    for (register int i = 1; i <= n; i++)
+    for (i = 1; i <= n; i++)
     {
-        int x;
-        scanf("%d", &x);
-        if (x <= 50)
+        scanf("%d", &k);
+        if (k <= 50)
         {
-            a[++cnt] = x;
-            maxn += a[cnt];
-            maxnn = max(a[cnt], maxnn);
+            sum += k;
+            num[k]++;
+            minn = min(k, minn);
+            maxn = max(k, maxn);
         }
     }
-    sort(a + 1, a + cnt + 1, cmp);
-    for (register int i = maxnn; i <= maxn / 2; i++) 
-        if (maxn % i == 0)
-            dfs(0, 0, i, 1);
-    printf("%d\n", maxn);
+    temp = sum / 2;
+    for (i = maxn; i <= temp; i++)
+        if (sum % i == 0)
+            dfs(sum / i, 0, i, maxn);
+    printf("%d", sum);
     return 0;
 }
