@@ -17,7 +17,7 @@ void merge_sort()
     int i = 1, j = 1, k = 1;
     while (i <= n && j <= n)
     {
-        if (wins[i].score > loss[j].score || wins[i].score == loss[j].score && wins[i].num < loss[i].num)
+        if (wins[i].score > loss[j].score || wins[i].score == loss[j].score && wins[i].num < loss[j].num)
             players[k++] = wins[i++];
         else 
             players[k++] = loss[j++];
@@ -34,27 +34,23 @@ int main()
         players[i].num = i;
     }
     for (int i = 1; i <= (n << 1); i++) cin >> w[i];
-    sort(players + 1, players + n + 1);
+    sort(players + 1, players + 2*n + 1);
     while (r--)
     {
-        int pos = 1;
         for (int i = 1; i < (n << 1); i += 2)
         {
             if (w[players[i].num] > w[players[i+1].num])
             {
-                wins[pos].score = players[i].score + 1;
-                wins[pos].num = players[i].num;
-                loss[pos].score = players[i+1].score;
-                loss[pos].num = players[i+1].num;
+                wins[(i+1)/2] = players[i];
+                wins[(i+1)/2].score += 1;
+                loss[(i+1)/2] = players[i+1];
             }
             else
             {
-                wins[pos].score = players[i+1].score + 1;
-                wins[pos].num = players[i+1].num;
-                loss[pos].score = players[i].score;
-                loss[pos].num = players[i].num;
+                wins[(i+1)/2] = players[i+1];
+                wins[(i+1)/2].score += 1;
+                loss[(i+1)/2] = players[i];
             }
-            pos++;
         }
         merge_sort();
     }
