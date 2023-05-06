@@ -3,7 +3,7 @@ using namespace std;
 #define ll long long
 const int maxn = 2e5+5;
 int n, m, l, r, w[maxn], v[maxn], le[maxn], ri[maxn];
-ll s, sum, ans, sumc[maxn], sumv[maxn];
+ll s, sum, ans, sumc[maxn], sumv[maxn], res = LLONG_MAX;
 bool check(int x)
 {
     sum = 0;
@@ -11,13 +11,14 @@ bool check(int x)
     memset(sumv, 0, sizeof(sumv));
     for (int i = 1; i <= n; i++)
     {
-        if (w[i] >= x) sumc[i] = sumc[i] + 1, sumv[i] = sumv[i-1] + v[i];
+        if (w[i] >= x) sumc[i] = sumc[i-1] + 1, sumv[i] = sumv[i-1] + v[i];
         else sumc[i] = sumc[i-1], sumv[i] = sumv[i-1];  
     }
     for (int i = 1; i <= m; i++)
     {
-        sum += (sumc[ri[i]] - sumc[le[i]]) * (sumv[ri[i]] - sumc[le[i]]);
+        sum += (sumc[ri[i]] - sumc[le[i]-1]) * (sumv[ri[i]] - sumv[le[i]-1]);
     }
+    res = min(res, abs(sum - s));
     return sum >= s;
 }
 int main()
@@ -36,6 +37,6 @@ int main()
         if (check(mid)) ans = mid, l = mid + 1;
         else r = mid - 1;
     }
-    cout << abs(sum-s) << endl;
+    cout << res << endl;
     return 0;
 }
