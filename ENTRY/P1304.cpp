@@ -13,9 +13,9 @@ bool isPrime(int x)
 int main()
 {
     cin >> n;
-    for (int i = 4; i <= n; i+=2)
+    for (int i = 4; i <= n; i += 2)
     {
-        for (int j = 2; j <= i / 2; j++)
+        for (int j = 2; j <= i/2; j++)
         {
             if (isPrime(j) && isPrime(i-j))
             {
