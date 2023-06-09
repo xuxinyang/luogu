@@ -23,10 +23,20 @@ int main()
         }
     }
     cin >> sx >> sy >> ex >> ey >> d;
-    q.push(Node{sx, sy, 0, d});
+    int f = -1;
+    switch (d)
+    {
+        case 'E': f = 0; break; 
+        case 'S': f = 1; break; 
+        case 'W': f = 2; break; 
+        case 'N': f = 3; break; 
+    }
+    q.push(Node{sx, sy, 0, f});
     while (!q.empty())
     {
-
+        Node now = q.front();
+        q.pop();
+        
     }
     return 0;
 }
