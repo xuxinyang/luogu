@@ -45,7 +45,8 @@ int main()
     }
     dfs(0, N, -1); // 0为虚拟根节点，深搜跑dp
     int ans = 0;
-    for (register int i = 0; i <= N; i++) // 这里一定要写<=，因为可以刚好把钱花完
-        ans = max(ans, dp[0][i]);         // 统计答案
-    printf("%d\n", ans);                  // 输出
-    return 0;                             // 结束了罪恶的一生
+    for (register int i = 0; i <= N; i++)
+        ans = max(ans, dp[0][i]);
+    printf("%d\n", ans); 
+    return 0;
+}
