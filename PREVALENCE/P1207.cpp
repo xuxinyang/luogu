@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 const string s = "0123456789ABCDEFGHIJKLMN";
-int b;
+int n, t;
 bool isPalindrome(string str)
 {
 	int i = 0, j = str.length()-1;
@@ -12,7 +12,7 @@ bool isPalindrome(string str)
 	}
 	return true;
 }
-string ten2b(int x)
+string ten2b(int x, int b)
 {
 	string ans = "";
 	while (x)
@@ -24,13 +24,25 @@ string ten2b(int x)
 }
 int main()
 {
-	cin >> b;
-	for (int i = 1; i <= 300; i++)
+	cin >> n >> t;
+	while (true)
 	{
-		int p = i * i;
-		string pz = ten2b(p);
-		if (isPalindrome(pz)) 
-			cout << ten2b(i) << " " << pz << "\n";
+		t++;
+		int cnt = 0, flag = 0;
+		for (int i = 2; i <= 10; i++)
+		{
+			if (isPalindrome(ten2b(t, i))) cnt++;
+			if (cnt >= 2)
+			{
+				flag = 1;
+				break;
+			}
+		}
+		if (flag)
+		{
+			if (n-- == 0) return 0;
+			cout << t << "\n";
+		}
 	}
 	return 0;
 }
