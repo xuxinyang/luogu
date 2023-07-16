@@ -19,7 +19,7 @@ int main()
 	{
 		for (int j = 1; j <= m; j++)
 		{
-			if (j <= n-3)
+			if (j <= m-3)
 			{
 				if (a[i][j]=='h' && a[i][j+1]=='e' && a[i][j+2]=='h' && a[i][j+3]=='e') ans++;
 				if (a[i][j]=='e' && a[i][j+1]=='h' && a[i][j+2]=='e' && a[i][j+3]=='h') ans++;
