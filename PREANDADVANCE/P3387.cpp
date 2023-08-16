@@ -8,7 +8,8 @@ struct Edge
 Edge edges[maxn << 2];
 int n, m, top, tot, s, p[maxn];
 int head[maxn], in[maxn], dist[maxn];
-int dfn[maxn], low[maxn], p[maxn];
+int dfn[maxn], low[maxn], p[maxn], tim;
+bool vis[maxn];
 stack<int> st;
 void add(int u, int v)
 {
@@ -17,7 +18,25 @@ void add(int u, int v)
 }
 void tarjan(int u)
 {
-
+    low[u] = dfn[u] = ++tim;
+    st.push(u), vis[u] = 1;
+    for (int i = head[u]; i; i = edges[i].next)
+    {
+        int v = edges[i].to;
+        if (!dfn[v])
+        {
+            tarjan(v);
+            low[u] = min(low[u], low[v]);
+        }
+        else if (vis[v])
+        {
+            low[u] = min(low[u], low[v]);
+        }
+    }
+    if (dfn[u] == low[u])
+    {
+        
+    }
 }
 int topo()
 {

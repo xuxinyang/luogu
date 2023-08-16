@@ -15,12 +15,10 @@ int getps(int x)
 int main()
 {
     cin >> s;
-    for (int i = 1; i <= s; i++) a[i] = getps(i);
-    // for (int i = 1; i <= s; i++) cout << a[i] << " ";
-    cout << endl;
+    for (int i = 2; i <= s; i++) a[i] = getps(i);
     for (int i = 1; i <= s; i++)
     {
-        for (int j = s; j > i; j--)
+        for (int j = s; j >= i; j--)
         {
             f[j] = max(f[j], f[j-i]+a[i]);
         }
