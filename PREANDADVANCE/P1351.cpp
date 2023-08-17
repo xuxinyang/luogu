@@ -28,9 +28,9 @@ int main()
     {
         int max1 = 0, max2 = 0;
         int s1 = 0, s2 = 0;
-        for (int j = head[i]; j; j = edges[j].next);
+        for (int j = head[i]; j; j = edges[j].next)
         {
-            int to = edges[i].to;
+            int to = edges[j].to;
             if (w[to] > max1) max2 = max1, max1 = w[to];
             else if (w[to] > max2) max2 = w[to];
             s1 = (s1 + w[to]) % mod;
