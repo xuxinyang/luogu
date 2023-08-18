@@ -34,7 +34,7 @@ void bfs()
         }
         for (int i = 1; i <= s; i++)
         {
-            if (vis.count(pos.pos + i) == 0)
+            if (vis.count(pos.pos + i) == 0 && pos.pos + i <= w)
             {
                 vis[pos.pos+i] = 1;
                 if (ump.count(pos.pos+i) != 0)
