@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 using namespace std;
 #define ll long long
 const int maxn = 1e5+5;
@@ -7,15 +8,15 @@ ll dist(int x1, int y1, int x2, int y2)
 {
     return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 }
-ll n, ans1, ans2, ansa, ansb;
+ll n, ans1, ans2;
 struct Node
 {
-    int x, y;
+    ll d1, d2;
 };
-Node pos[maxn];
+Node dis[maxn];
 bool cmp(Node A, Node B)
 {
-    return 
+    return A.d1 < B.d1;
 }
 int main()
 {
@@ -25,13 +26,16 @@ int main()
     for (int i = 1; i <= n; i++)
     {
         cin >> x >> y;
-        ll cur1 = dist(x1, y1, x, y);
-        ll cur2 = dist(x2, y2, x, y);
-        ansa = max(cur1, ansa);
-        ansb = max(cur2, ansb);
-        if (cur1 < cur2 && cur1 > ans1 && ans2 < cur2) ans1 = cur1;
-        if (cur1 > cur2 && cur2 > ans2 && ans1 < cur1) ans2 = cur2;
+        dis[i].d1 = dist(x1, y1, x, y);
+        dis[i].d2 = dist(x2, y2, x, y);
     }
-    cout << min(min(ansa, ansb), ans1 + ans2);
+    sort(dis + 1, dis + n + 1, cmp);
+    ans1 = dis[n].d1, ans2 = 0;
+    for (int i = n-1; i >= 1; i--)
+    {
+        ans2 = max(ans2, dis[i+1].d2);
+        ans1 = min(ans1, ans2 + dis[i].d1);
+    }
+    cout << ans1;
     return 0;
 }
