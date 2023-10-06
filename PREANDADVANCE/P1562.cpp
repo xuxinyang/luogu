@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define lowbit(x) ((x)&(-x))
 char a[15][15];
 int n, ans;
 bool vis[15][15];
