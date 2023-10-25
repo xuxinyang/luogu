@@ -16,7 +16,7 @@ queue<int> q;
 void spfa()
 {
     memset(dist, 0x7F, sizeof(dist));
-    dist[n]
+    dist[n];
 }
 int main()
 {
