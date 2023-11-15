@@ -19,8 +19,8 @@ int cantor()
 }
 void incantor(int k)
 {
-    // v.clear();
-    while (!v.empty()) v.erase(v.end());
+    v.clear();
+    // while (!v.empty()) v.erase(v.end());
     for (int i = 1; i <= n; i++) v.push_back(i);
     for (int i = 1; i < n; i++)
     {
