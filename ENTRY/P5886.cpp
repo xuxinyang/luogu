@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int maxn = 1e5+5;
+const int maxn = 1e6+5;
 int n, m, p, t, x, a[maxn], ans;
 int main()
 {
