@@ -1,46 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int maxn = 1e7+5;
+int m[maxn];
 int l, r, L, R, k;
-string ten2x(int num, int p)
-{
-    string s = "";
-    while (num)
-    {
-        if (num % p >= 10)
-            s = char(num % p - 10 + 'A') + s;
-        else
-            s = char(num % p + '0') + s;
-        num /= p;
-        int len = s.length();
-        if (len > 2 && s[len-1] != s[len-3] || s[len-1] == s[len-2]) return s;
-    }
-    return s;
-}
-bool isWave(string s)
-{
-    if (s.length() == 1) return true;
-    if (s.length() == 2 && s[0] != s[1]) return true;
-    if (s.length() == 2 && s[0] == s[1]) return false;
-    for (int i = 0; i < s.length() - 2; i++)
-    {
-        if (s[i] != s[i + 2] || s[i] == s[i+1])
-            return false;
-    }
-    return true;
-}
 int main()
 {
-    scanf("%d %d %d %d %d", &l, &r, &L, &R, &k);
+    cin >> l >> r >> L >> R >> k;
+    for (int i = l; i <= r; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            for (int k = 1; k < i; k++)
+            {
+                if (j != k)
+                {
+                    int v1 = 0;
+                    int v2 = 0;
+                    while (v1 <= R)
+                    {
+                        if (v2 % 2 == 0)
+                        {
+                            v1 = v1 * i + j;
+                        }
+                        else
+                        {
+                            v1 = v1 * i + k;
+                        }
+                        v2++;
+                        if (v1 >= L && v1 <= R)
+                        {
+                            m[v1]++;
+                        }
+                    }
+                }
+            }
+        }
+    }
     for (int i = L; i <= R; i++)
     {
-        int p = 0;
-        for (int j = l; j <= r; j++)
+        if (m[i] == k)
         {
-            if (isWave(ten2x(i, j)))
-                p++;
+            cout << i << endl;
         }
-        if (p == k)
-            printf("%d\n", i);
     }
     return 0;
 }
