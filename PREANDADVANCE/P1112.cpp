@@ -11,11 +11,16 @@ string ten2x(int num, int p)
         else
             s = char(num % p + '0') + s;
         num /= p;
+        int len = s.length();
+        if (len > 2 && s[len-1] != s[len-3] || s[len-1] == s[len-2]) return s;
     }
     return s;
 }
 bool isWave(string s)
 {
+    if (s.length() == 1) return true;
+    if (s.length() == 2 && s[0] != s[1]) return true;
+    if (s.length() == 2 && s[0] == s[1]) return false;
     for (int i = 0; i < s.length() - 2; i++)
     {
         if (s[i] != s[i + 2] || s[i] == s[i+1])
