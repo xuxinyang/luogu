@@ -1,88 +1,84 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int maxn = 2e5+5;
-int n, head[maxn], tot, dist[maxn], k, maxdist, ans;
-bool vis[maxn];
-map<pair<int, int>, int> mp;
-struct Edge
+vector<int> a[maxn], b[maxn];
+int last[maxn], u, v, nxt[maxn];
+long long dis[maxn], mmm[maxn], op;
+bool vv[maxn];
+void dfs1(int o, long long p, int q)
 {
-    int to, next, w;
-};
-Edge edges[maxn<<1];
-void add(int u, int v, int w)
-{
-    edges[++tot] = Edge{v, head[u], w};
-    head[u] = tot;
-};
-void dfs1(int u)
-{
-    for (int i = head[u]; i ; i = edges[i].next)
+    if (p > op)
     {
-        int to = edges[i].to;
-        if (!vis[to])
-        {
-            vis[to] = true;
-            dist[to] = dist[u] + edges[i].w;
-            dfs(to);
-        }
+        op = p;
+        u = o;
     }
+    for (int i = 0; i < a[o].size(); i++)
+        if ((!vv[a[o][i]]) && (a[o][i] != q))
+        {
+            vv[a[o][i]] = true;
+            dfs1(a[o][i], p + b[o][i], o);
+        }
 }
-void dfs2(int u)
+void dfs2(int o, long long p, int q)
 {
-    for (int i = head[u]; i ; i = edges[i].next)
+    last[o] = q;
+    dis[o] = p;
+    if (p > op)
     {
-        int to = edges[i].to;
-        if (!vis[to])
-        {
-            vis[to] = true;
-            dist[to] = dist[u] + edges[i].w;
-            dfs1(to);
-        }
+        op = p;
+        v = o;
     }
+    for (int i = 0; i < a[o].size(); i++)
+        if ((!vv[a[o][i]]) && (a[o][i] != q))
+        {
+            vv[a[o][i]] = true;
+            dfs2(a[o][i], p + b[o][i], o);
+        }
 }
 int main()
 {
-    int u, v, w;
+    int n;
     cin >> n;
-    for (int i = 1; i <= n-1; i++)
+    for (int i = 1; i < n; i++)
     {
-        cin >> u >> v >> w;
-        add(u, v, w);
-        add(v, u, w);
+        int x, y, z;
+        cin >> x >> y >> z;
+        a[x].push_back(y);
+        b[x].push_back(z);
+        a[y].push_back(x);
+        b[y].push_back(z);
     }
-    memset(vis, 0, sizeof(vis));
-    vis[1] = true;
-    dfs1(1);
-    for (int i = 1; i <= n; i++)
+    memset(vv, 0, sizeof(vv));
+    op = 0;
+    dfs1(1, 0, 0);
+    memset(vv, 0, sizeof(vv));
+    op = 0;
+    dfs2(u, 0, 0);
+    int distance = dis[v];
+    cout << dis[v] << endl;
+    memset(vv, 0, sizeof(vv));
+    for (int i = v; i != 0; i = last[i])
+        vv[i] = true;
+    for (int i = v; i != 0; i = last[i])
     {
-        if (maxdist < dist[i])
-        {
-            maxdist = dist[i];
-            k = i;
-        }
+        op = 0;
+        dfs1(i, 0, 0);
+        mmm[i] = op;
     }
-    memset(vis, 0, sizeof(vis));
-    memset(dist, 0, sizeof(dist));
-    vis[k] = 1;
-    dfs1(k);
-    for (int i = 1; i <= n; i++)
+    int j = v;
+    for (int i = last[v]; i != 0; i = last[i])
+        nxt[i] = j, j = i;
+    int ans = 0;
+    int i;
+    for (i = j; i != 0; i = nxt[i])
+        if (dis[v] - dis[i] == mmm[i])
+            break;
+    for (; i != 0; i = last[i])
     {
-        if (maxdist < dist[i])
-        {
-            maxdist = dist[i];
-            k = i;
-        }
+        if (dis[i] == mmm[i])
+            break;
+        ans++;
     }
-    cout << maxdist << endl;
-    for (int i = 1; i <= n; i++)
-    {
-        if (dist[i] == maxdist)
-        {
-            memset(vis, 0, sizeof(vis));
-            dfs2(i);
-            ans++;
-        }
-    }
-    cout << ans;
+    cout << ans << endl;
     return 0;
 }
