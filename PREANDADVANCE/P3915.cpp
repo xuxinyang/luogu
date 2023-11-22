@@ -39,7 +39,7 @@ int main()
         memset(head, 0, sizeof(head));
         memset(st, 0, sizeof(st));
         tot = 0, cnt = 0;
-        memset(edges, 0, sizeof(edges));
+        // memset(edges, 0, sizeof(edges));
         cin >> n >> k;
         for (int i = 1; i <= n-1; i++)
         {
