@@ -27,7 +27,7 @@ int main()
     while (q--)
     {
         cin >> k;
-        cout << ans[q % p] << "\n";
+        cout << ans[k % p] << "\n";
     }
     return 0;
 }
