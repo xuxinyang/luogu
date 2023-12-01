@@ -14,7 +14,7 @@
       "cppStandard": "${default}",
       "intelliSenseMode": "windows-gcc-x64",
       "compilerArgs": [],
-      "compilerPath": "gcc",
+      "compilerPath": "C:/mingw64/bin/gcc.exe",
       "browse": {
         "path": [
           "${workspaceFolder}/**",
