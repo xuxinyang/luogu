@@ -85,5 +85,8 @@
     "activityBar.background": "#043521",
     "titleBar.activeBackground": "#064A2F",
     "titleBar.activeForeground": "#F0FEF8"
+  },
+  "files.associations": {
+    "iostream": "cpp"
   }
 }
