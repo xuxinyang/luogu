@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-int t, x, y, k;
+#define ll long long
+ll t, x, y, k;
 int main()
 {
     ios::sync_with_stdio(false);
@@ -21,7 +22,7 @@ int main()
             cout << "0\n";
             continue;
         }
-        int tmp = (k - (k / x) * x) / y;
+        ll tmp = (k - (k / x) * x) / y;
         cout << (k / y) - tmp << "\n";
     }
 }
