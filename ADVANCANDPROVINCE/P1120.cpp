@@ -1,60 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-int num[500010], maxn, minn, sum;
-
-int max(int x, int y)
+const int maxn = 70;
+int n, len, cnt, sum, a[maxn];
+bool used[maxn];
+void dfs(int u, int cur, int start)
 {
-    return x > y ? x : y;
-}
-
-int min(int x, int y)
-{
-    return x > y ? y : x;
-}
-void dfs(int wait, int already, int need, int can)
-{ 
-    int i;
-    if (wait == 0)
-    { 
-        printf("%d", need); 
+    if (u > cnt)    // 全部拼好了
+    {
+        printf("%d", len);
         exit(0);
     }
-    if (already == need)
+    if (cur == len) // 拼好了第u根，再拼下一根
     {
-        dfs(wait - 1, 0, need, maxn);
+        dfs(u+1, 0, 1);
         return;
     }
-    for (i = can; i >= minn; i--)
-        if (num[i] && i + already <= need)
-        {
-            num[i]--;
-            dfs(wait, already + i, need, i);
-            num[i]++;
-            if (already == 0 || already + i == need)
-                return;
-        }
+    for (int i = start; i <= n; i++)
+    {
+        if (used[i] || cur + a[i] > len) continue;  // 不合法的就跳过
+        used[i] = 1;
+        dfs(u, cur + a[i], i + 1);
+        used[i] = 0;    // 拼接失败，恢复现场
+        if (cur == 0) return;   // 拼接第一个，失败回溯
+        if (cur + a[i] == len) return;  // 拼接最后一个，失败回溯
+        while (i < n && a[i] == a[i+1]) i++; // 跳过与a[i]等长的木棍
+    }
 }
-
 int main()
 {
-    int i, j, k, m, n, temp;
+    ios::sync_with_stdio(false);
+    cin.tie(0);
     scanf("%d", &n);
-    for (i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        scanf("%d", &k);
-        if (k <= 50)
-        {
-            sum += k;
-            num[k]++;
-            minn = min(k, minn);
-            maxn = max(k, maxn);
-        }
+        scanf("%d", &a[i]);
+        sum += a[i];
     }
-    temp = sum / 2;
-    for (i = maxn; i <= temp; i++)
-        if (sum % i == 0)
-            dfs(sum / i, 0, i, maxn);
-    printf("%d", sum);
+    sort(a + 1, a + n + 1);
+    reverse(a + 1, a + n + 1);
+    for (len = a[1]; ; len++)
+    {
+        if (sum % len) continue;
+        cnt = sum / len;
+        dfs(1, 0, 1);
+    }
     return 0;
 }
