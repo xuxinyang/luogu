@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int inf = INT_MAX;
-int n, m, mp[105][105], ans, tmp[105][105];
+int n, m, mp[105][105], ans;
 int main()
 {
     ios::sync_with_stdio(false);
@@ -26,47 +26,20 @@ int main()
         }
     }
     ans = inf;
-    for (int x = 1; x <= n; x++)
+    for (int x = 1; x < n; x++)
     {
-        for (int y = 1; y < x; y++)
+        for (int y = x + 1; y <= n; y++)
         {
-            if (mp[x][y])
+            int res = 0;
+            // 再跑一遍Floyd
+            for (int i = 1; i < n; i++)
             {
-                // 置空
-                for (int i = 1; i <= n; i++)
+                for (int j = i + 1; j <= n; j++)
                 {
-                    for (int j = 1; j <= n; j++)
-                    {
-                        tmp[i][j] = mp[i][j];
-                    }
+                    res += min(mp[i][j], min(mp[i][x] + mp[y][j], mp[i][y] + mp[x][j]));
                 }
-                // x--y设置为0
-                tmp[x][y] = tmp[y][x] = 0;
-                // 再跑一遍Floyd
-                for (int i = 1; i <= n; i++)
-                {
-                    for (int j = 1; j <= n; j++)
-                    {
-                        tmp[i][j] = min(tmp[i][j], tmp[i][x] + tmp[x][j]);
-                    }
-                }
-                for (int i = 1; i <= n; i++)
-                {
-                    for (int j = 1; j <= n; j++)
-                    {
-                        tmp[i][j] = min(tmp[i][j], tmp[i][y] + tmp[y][j]);
-                    }
-                }
-                int res = 0;
-                for (int i = 1; i <= n; i++)
-                {
-                    for (int j = 1; j < i; j++)
-                    {
-                        res += tmp[i][j];
-                    }
-                }
-                ans = min(ans, res);
             }
+            ans = min(ans, res);
         }
     }
     cout << ans;
