@@ -25,9 +25,9 @@ bool spfa(double x)
         cnt[i] = 0;
         vis[i] = 0;
     }
-    dist[n+1] = 0, vis[n+1] = 1;
+    dist[0] = 0, vis[0] = 1;
     queue<int> q;
-    q.push(n+1);
+    q.push(0);
     while (!q.empty())
     {
         int cur = q.front();
@@ -54,7 +54,7 @@ int main()
 {
     cin >> n >> s >> t;
     double k, l = 0, r = 10;
-    for (int i = 0; i <= n; i++) add(n+1, i, 0, 3);
+    for (int i = 0; i <= n; i++) add(0, i, 0, 3);
     for (int i = 1; i <= s; i++)
     {
         int op, a, b;
