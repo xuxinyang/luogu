@@ -28,7 +28,7 @@ int main()
     cout << f[m] << endl;
     for (int i = 1, j = m; i <= n; i++)
     {
-        cout << i << " " << ans[i][j];
+        cout << i << " " << ans[i][j] << endl;
         j -= ans[i][j];
     }
     return 0;
