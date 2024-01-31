@@ -1,0 +1,9 @@
+[safe]
+	directory = D:/code/c++/luogu
+[user]
+	name = caomuyilin
+	email = 18729346082@163.com
+[http]
+    proxy = 127.0.0.1:4780
+[https]
+    proxy = 127.0.0.1:4780
