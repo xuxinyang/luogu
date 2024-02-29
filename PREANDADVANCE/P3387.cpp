@@ -1,62 +1,111 @@
 #include <bits/stdc++.h>
+#define maxn 100001
+#define maxm 500001
 using namespace std;
-const int maxn = 1e4+5;
-struct Edge
+struct node
 {
     int to, next, from;
-};
-Edge edges[maxn << 2];
-int n, m, top, tot, s, p[maxn];
-int head[maxn], in[maxn], dist[maxn];
-int dfn[maxn], low[maxn], p[maxn], tim;
-bool vis[maxn];
-stack<int> st;
-void add(int u, int v)
+} edge[maxm];
+queue<int> q;
+vector<int> cb[maxn];
+vector<int> rdr[maxn];
+int ans[maxn], totq, x, y, v, rd[maxn], u, n, m, sum, vis[maxn], dis_[maxn], dis[maxn];
+int dfn[maxn], low[maxn], f[maxn], times, cntqq;
+int stack_[maxn], heads[maxm], visit[maxn], cnt, tot, index_;
+void add(int x, int y)
 {
-    edges[++tot] = Edge{v, head[u], u};
-    head[u] = tot;
+    edge[++cntqq].next = heads[x];
+    edge[cntqq].from = x;
+    edge[cntqq].to = y;
+    heads[x] = cntqq;
+    return;
 }
-void tarjan(int u)
+void tuopu()
 {
-    low[u] = dfn[u] = ++tim;
-    st.push(u), vis[u] = 1;
-    for (int i = head[u]; i; i = edges[i].next)
+    for (int i = 1; i <= tot; i++)
     {
-        int v = edges[i].to;
-        if (!dfn[v])
+        if (rd[i] == 0)
+            q.push(i);
+    }
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+        ans[++totq] = u;
+        for (int i = 1; i <= cb[u].size(); i++)
         {
-            tarjan(v);
-            low[u] = min(low[u], low[v]);
-        }
-        else if (vis[v])
-        {
-            low[u] = min(low[u], low[v]);
+            v = cb[u][i - 1];
+            rd[v]--;
+            if (rd[v] == 0)
+                q.push(v);
         }
     }
-    if (dfn[u] == low[u])
-    {
-        
-    }
 }
-int topo()
+void tarjan(int x) 
 {
-
+    dfn[x] = low[x] = ++times;
+    stack_[++index_] = x;
+    visit[x] = 1;
+    for (int i = heads[x]; i != -1; i = edge[i].next)
+    {
+        if (!dfn[edge[i].to])
+        {
+            tarjan(edge[i].to);
+            low[x] = min(low[x], low[edge[i].to]);
+        }
+        else if (visit[edge[i].to])
+            low[x] = min(low[x], dfn[edge[i].to]);
+    }
+    if (low[x] == dfn[x])
+    {
+        tot++;
+        while (1)
+        {
+            vis[stack_[index_]] = tot; 
+            dis_[tot] += dis[stack_[index_]];
+            visit[stack_[index_]] = 0;
+            index_--;
+            if (x == stack_[index_ + 1])
+                break;
+        }
+    }
 }
 int main()
 {
-    int u, v;
-    cin >> n >> m;
-    for (int i = 1; i <= n; i++) cin >> p[i];
+    memset(heads, -1, sizeof(heads));
+    int n, m, x, y;
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= n; i++)
+        scanf("%d", &dis[i]);
     for (int i = 1; i <= m; i++)
     {
-        cin >> u >> v;
-        add(u, v);
+        scanf("%d%d", &x, &y);
+        add(x, y);
     }
     for (int i = 1; i <= n; i++)
-        if (!dfn[i]) tarjan(i);
-    for (int i = 1; i <= m; i++)
+        if (!dfn[i])
+            tarjan(i);
+    for (int i = 1; i <= cntqq; i++)
     {
-        
+        if (vis[edge[i].from] != vis[edge[i].to])
+        {
+            x = vis[edge[i].from];
+            y = vis[edge[i].to];
+            rd[y]++;
+            cb[x].push_back(y);
+            rdr[y].push_back(x);
+        }
     }
+    tuopu();
+    for (int i = 1; i <= tot; i++)
+    {
+        int w = ans[i];
+        f[w] = dis_[w];
+        for (int j = 1; j <= rdr[w].size(); j++)
+            f[w] = max(f[w], f[rdr[w][j - 1]] + dis_[w]);
+    }
+    for (int i = 1; i <= tot; i++)
+        sum = max(f[i], sum);
+    printf("%d", sum);
     return 0;
 }
