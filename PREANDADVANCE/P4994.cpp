@@ -8,7 +8,7 @@ int main()
     f[1] = f[2] = 1;
     f[1] = f[1] % m;
     f[2] = f[2] % m;
-    if (f[1] == 0 && f[2] == 1)
+    if (f[1] == 0 && f[2] == 1) // 特判
     {
         cout << 1 << endl;
         return 0;
@@ -17,10 +17,10 @@ int main()
     {
         for (int i = 3; ; i++)
         {
-            f[i] = (f[i-1] + f[i-2]) % m;
-            if (f[i-1] == 0 && f[i] == 1)
+            f[i] = (f[i-1] + f[i-2]) % m;   // 模拟
+            if (f[i-1] == 0 && f[i] == 1)   // 出现循环
             {
-                cout << i-1 << endl;
+                cout << i-1 << endl;    // 输出位置
                 return 0; 
             }
         }
