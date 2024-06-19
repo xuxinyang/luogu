@@ -1,36 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int maxn = 1e5+5;
-int a[maxn], b[maxn], pos[maxn];
+const int maxn = 2e4+5;
+int n, q;
+int a[maxn], st[maxn][16];
+map<int, int> mp;
 int main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
     int t;
-    scanf("%d", &t);
+    cin >> t;
     while (t--)
     {
         int n;
         cin >> n;
-        memset(b, 0, n*4);
-        memset(pos, 0, n*4);
+        mp.clear();
         for (int i = 1; i <= n; i++)
         {
-            scanf("%d", &a[i]);
-            b[pos[a[i]]] = i;
-            pos[a[i]] = i;
+            cin >> a[i];
+            st[i][0] = n+1;
+            st[mp[a[i]]][0] = i;
+            mp[a[i]] = i;
         }
-        int q;
-        scanf("%d", &q);
+        int j = 1, flag = 1;
+        while (flag)
+        {
+            flag = 0;
+            st[n+1][j-1] = n + 1;
+            for (int i = 1; i <= n; i++)
+            {
+                if (st[i][j-1] == n+1) st[i][j] = n+1;
+                else st[i][j] = st[st[i][j-1]+1][j-1];
+                flag += (st[i][j]!=n+1);
+            }
+            j++;
+        }
+        cin >> q;
         while (q--)
         {
-            int l, r, ans = 0;
-            scanf("%d %d", &l, &r);
-            if (l > r) swap(l, r);
-            for (int i = l; i <= r; i++)
+            int l, r, sum = 0;
+            cin >> l >> r;
+            while (l <= r)
             {
-                if (b[i] != 0 && b[i] <= r) i = b[i];
-                else ans++;
+                int idx = lower_bound(st[l], st[l]+j, r+1)-st[l];
+                if (idx == 0) sum++, l++;
+                else l = st[l][idx-1]+1;
             }
-            printf("%d\n", ans);
+            cout << sum << "\n";
         }
     }
     return 0;
