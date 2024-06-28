@@ -7,7 +7,7 @@ struct Edge
 {
     int to, w, nxt;
 };
-Edge edges[maxn*maxn*maxn];
+Edge edges[maxn*maxn];
 queue<int> q;
 void add(int u, int v, int w)
 {
