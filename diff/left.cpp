@@ -1,71 +1,64 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-const int maxn = 1e3 + 5;
-const ll inf = LLONG_MAX;
-struct Node
+int k;
+char str[205];
+struct Bignum
 {
-    ll l, r, h, id;
-};
-ll n, dp[maxn][2], s, t;
-Node nodes[maxn];
-bool cmp(Node x, Node y)
+    int x[205];
+    Bignum() { memset(x, 0, sizeof(x)); }
+} n, tmp, mul, ans;
+Bignum operator*(Bignum a, Bignum b)
 {
-    if (x.h == y.h)
-        return x.l < y.l;
-    return x.h > y.h;
+    Bignum ans;
+    for (int i = 0; i < k; i++)
+        for (int j = 0; j < k; j++)
+            ans.x[i + j] += a.x[i] * b.x[j];
+    for (int i = 0; i < k; i++)
+        ans.x[i + 1] += ans.x[i] / 10, ans.x[i] %= 10;
+    for (int i = k; i < 205; i++)
+        ans.x[i] = 0;
+    return ans;
+}
+Bignum operator*(Bignum a, int b)
+{
+    for (int i = 0; i <= 200; i++)
+        a.x[i] *= b;
+    for (int i = 0; i <= 200; i++)
+        a.x[i + 1] += a.x[i] / 10, a.x[i] %= 10;
+    return a;
 }
 int main()
 {
-    cin >> n >> s >> t;
-    for (int i = 1; i <= n; i++)
+    scanf("%s %d", str, &k);
+    ans.x[0] = 1;
+    int len = strlen(str);
+    for (int i = 0; i < k; i++)
+        n.x[i] = str[len - i - 1] - '0';
+    mul = n;
+    for (int i = 0; i < k; i++)
     {
-        cin >> nodes[i].l >> nodes[i].r >> nodes[i].h;
-        nodes[i].id = i;
-        dp[i][0] = dp[i][1] = inf;
-    }
-    sort(nodes + 1, nodes + n + 1, cmp);
-    int start, target;
-    for (int i = 1; i <= n; i++)
-    {
-        if (nodes[i].id == s)
-            start = i;
-        if (nodes[i].id == t)
-            target = i;
-    }
-    dp[start][0] = 0, dp[start][1] = nodes[start].r - nodes[start].l;
-    ll ans = inf;
-    for (int i = start; i <= target; i++)
-    {
-        for (int j = i + 1; j <= target; j++)
+        Bignum tmp = n;
+        int j = 1, flag = 1;
+        for (int j = 1; j <= 10; j++)
         {
-            if (nodes[i].l >= nodes[j].l && nodes[i].l <= nodes[j].r && nodes[i].h > nodes[j].h)
+            tmp = tmp * mul;
+            if (tmp.x[i] == n.x[i])
             {
-                ll val = nodes[i].h - nodes[j].h;
-                if (j == target)
-                    ans = min(ans, dp[i][0] + val);
-                dp[j][0] = min(dp[j][0], dp[i][0] + nodes[i].l - nodes[j].l + val);
-                dp[j][1] = min(dp[j][1], dp[i][0] + nodes[j].r - nodes[i].l + val);
+                ans = ans * j;
+                flag = 0;
                 break;
             }
         }
-        for (int j = i + 1; j <= target; j++)
-        {
-            if (nodes[i].r >= nodes[j].l && nodes[i].r <= nodes[j].r && nodes[i].h > nodes[j].h)
-            {
-                ll val = nodes[i].h - nodes[j].h;
-                if (j == target)
-                    ans = min(ans, dp[i][1] + val);
-                dp[j][0] = min(dp[j][0], dp[i][1] + nodes[i].r - nodes[j].l + val);
-                dp[j][1] = min(dp[j][1], dp[i][1] + nodes[j].r - nodes[i].r + val);
-                break;
-            }
-        }
+        if (flag)
+            return puts("-1"), 0;
+        tmp = mul;
+        for (int k = 1; k < j; k++)
+            mul = mul * tmp;
     }
-    cout << ans;
-    if (ans == inf)
-        cout << "-1";
-    else
-        cout << ans;
+    len = 200;
+    while (ans.x[len] == 0 && len >= 1)
+        len--;
+    for (; len >= 0; len--)
+        putchar(ans.x[len] + '0');
     return 0;
 }
