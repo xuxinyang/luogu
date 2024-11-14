@@ -1,65 +1,84 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
+#include <iostream>
 using namespace std;
-int k;
-char str[205];
-struct bignum
+int n, m, f[1001][1001], ans[1001][1001], cz[1001][1001], a[1001][1001], minn = 1000000009;
+
+void dfs(int lie)
 {
-    int x[205];
-    bignum() { memset(x, 0, sizeof(x)); }
-} n, tmp, mul, ans;
-bignum operator*(bignum a, bignum b) // 特化过的高精乘 只取后k位
-{
-    bignum ans;
-    for (int i = 0; i < k; i++)
-        for (int j = 0; j < k; j++)
-            ans.x[i + j] += a.x[i] * b.x[j];
-    for (int i = 0; i < k; i++)
-        ans.x[i + 1] += ans.x[i] / 10, ans.x[i] %= 10;
-    for (int i = k; i < 205; i++)
-        ans.x[i] = 0;
-    return ans;
-}
-bignum operator*(bignum a, int b) // 这个高精乘低精是ans专用的233
-{
-    for (int i = 0; i <= 200; i++)
-        a.x[i] *= b;
-    for (int i = 0; i <= 200; i++)
-        a.x[i + 1] += a.x[i] / 10, a.x[i] %= 10;
-    return a;
+    if (lie > m)
+    {
+        for (int i = 1; i <= n; i++)
+            for (int j = 1; j <= m; j++)
+                cz[i][j] = a[i][j]; // 定义一个操作数组来保存a数组；
+        for (int i = 1; i <= m; i++)
+            if (f[1][i]) // 已知第一行的修改方案，进行题目要求修改。
+            {
+                cz[1][i] ^= 1, cz[2][i] ^= 1;
+                cz[1][i + 1] ^= 1, cz[1][i - 1] ^= 1;
+            }
+        for (int i = 2; i <= n; i++)
+            for (int j = 1; j <= m; j++)
+            {
+                if (cz[i - 1][j] == 1)
+                {
+                    f[i][j] = 1;
+                    cz[i][j] ^= 1;
+                    cz[i][j + 1] ^= 1, cz[i][j - 1] ^= 1;
+                    cz[i + 1][j] ^= 1, cz[i - 1][j] ^= 1; // 若第i行为1，则修改i+1行，并按照题目要求修改旁边各点。
+                }
+                else
+                    f[i][j] = 0;
+                if (cz[i - 1][j])
+                    return;
+            }
+        bool pd = false;
+        for (int i = 1; i <= n; i++)
+            for (int j = 1; j <= m; j++)
+                if (cz[i][j]) // 修改完后，依然存在1，肯定impossible；
+                {
+                    pd = true;
+                    break;
+                }
+        if (!pd)
+        {
+            int sum = 0;
+            for (int i = 1; i <= n; i++)
+                for (int j = 1; j <= m; j++)
+                    if (f[i][j])
+                        sum++;
+            if (sum >= minn)
+                return;
+            minn = sum;
+            for (int i = 1; i <= n; i++)
+                for (int j = 1; j <= m; j++)
+                    ans[i][j] = f[i][j];
+        }
+        return;
+    }
+    for (int i = 0; i <= 1; i++)
+    {
+        f[1][lie] = i;
+        dfs(lie + 1); // dfs第一行的修改方案
+    }
 }
 int main()
 {
-    scanf("%s %d", str, &k);
-    ans.x[0] = 1;
-    int len = strlen(str);
-    for (int i = 0; i < k; i++)
-        n.x[i] = str[len - i - 1] - '0';
-    mul = n;
-    for (int i = 0; i < k; i++)
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+            cin >> a[i][j];
+    dfs(1);
+    if (minn == 1000000009)
+        cout << "IMPOSSIBLE"; // 最小值没有改变，即不可能
+    else
     {
-        bignum tmp = n;
-        int j = 1, flag = 1;
-        for (j = 1; j <= 10; j++)
+        for (int i = 1; i <= n; i++)
         {
-            tmp = tmp * mul;
-            if (tmp.x[i] == n.x[i])
-            {
-                ans = ans * j;
-                flag = 0;
-                break;
-            }
+            for (int j = 1; j <= m; j++)
+                cout << ans[i][j] << " ";
+            cout << endl;
         }
-        if (flag)
-            return puts("-1"), 0;
-        tmp = mul;
-        for (int k = 1; k < j; k++)
-            mul = mul * tmp;
     }
-    len = 200;
-    while (ans.x[len] == 0 && len >= 1)
-        len--;
-    for (; len >= 0; len--)
-        putchar(ans.x[len] + '0');
 }
