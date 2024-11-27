@@ -88,6 +88,7 @@
   },
   "files.associations": {
     "iostream": "cpp",
-    "random": "cpp"
-  }
+    "random": "cpp",
+    "iomanip": "cpp"
+}
 }
