@@ -51,8 +51,8 @@ signed main()
         for (int i = 1; i <= P; i++)
         {
             cin >> a[i].s >> a[i].t;
-            f[a[i].s] = f[a[i].t] = 1e9;
-            for (int j = 1; j <= S - 1; j++) f[a[i].s + j] = 1e9;
+            f[a[i].s] = f[a[i].t] = inf;
+            for (int j = 1; j <= S - 1; j++) f[a[i].s + j] = inf;
         }
         sort(a + 1, a + P + 1, [](Point &a, Point &b){
             return a.s < b.s;
