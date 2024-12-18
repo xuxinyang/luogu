@@ -16,7 +16,7 @@ void dfs(int x, int v)
     f[x] = v;
     if (x > a[P].s || P == 0)
     { 
-        ans = min(ans, v + (int)ceil(1.0 * (W - x) / S));
+        ans = min(ans, v + (W-x+S-1) / S);
         return;
     }
     for (int i = 1; i <= P; i++)
