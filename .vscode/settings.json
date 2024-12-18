@@ -91,6 +91,12 @@
   "files.associations": {
     "iostream": "cpp",
     "random": "cpp",
-    "iomanip": "cpp"
-  }
+    "iomanip": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "vector": "cpp",
+    "string_view": "cpp"
+}
 }
