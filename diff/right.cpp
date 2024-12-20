@@ -1,84 +1,108 @@
-#include <algorithm>
 #include <cstdio>
-#include <cstring>
-#include <iostream>
-using namespace std;
-int n, m, f[1001][1001], ans[1001][1001], cz[1001][1001], a[1001][1001], minn = 1000000009;
-
-void dfs(int lie)
+int n;
+char res[1000005];
+int a[1000005];
+inline int read()
 {
-    if (lie > m)
+    register int x = 0, f = 1;
+    register char s = getchar();
+    while (s > '9' || s < '0')
     {
-        for (int i = 1; i <= n; i++)
-            for (int j = 1; j <= m; j++)
-                cz[i][j] = a[i][j]; // 定义一个操作数组来保存a数组；
-        for (int i = 1; i <= m; i++)
-            if (f[1][i]) // 已知第一行的修改方案，进行题目要求修改。
-            {
-                cz[1][i] ^= 1, cz[2][i] ^= 1;
-                cz[1][i + 1] ^= 1, cz[1][i - 1] ^= 1;
-            }
-        for (int i = 2; i <= n; i++)
-            for (int j = 1; j <= m; j++)
-            {
-                if (cz[i - 1][j] == 1)
-                {
-                    f[i][j] = 1;
-                    cz[i][j] ^= 1;
-                    cz[i][j + 1] ^= 1, cz[i][j - 1] ^= 1;
-                    cz[i + 1][j] ^= 1, cz[i - 1][j] ^= 1; // 若第i行为1，则修改i+1行，并按照题目要求修改旁边各点。
-                }
-                else
-                    f[i][j] = 0;
-                if (cz[i - 1][j])
-                    return;
-            }
-        bool pd = false;
-        for (int i = 1; i <= n; i++)
-            for (int j = 1; j <= m; j++)
-                if (cz[i][j]) // 修改完后，依然存在1，肯定impossible；
-                {
-                    pd = true;
-                    break;
-                }
-        if (!pd)
+        if (s == '-')
+            f = -1;
+        s = getchar();
+    }
+    while (s >= '0' && s <= '9')
+    {
+        x = x * 10 + s - '0';
+        s = getchar();
+    }
+    return x * f;
+}
+inline bool work(int l1, int r1, int l2, int r2)
+{
+    for (register int i = 1; i < n; ++i)
+    {
+        if (l1 <= r1 && ((l2 <= r2 && a[l1] == a[l2]) || (l1 < r1 && a[l1] == a[r1])))
         {
-            int sum = 0;
-            for (int i = 1; i <= n; i++)
-                for (int j = 1; j <= m; j++)
-                    if (f[i][j])
-                        sum++;
-            if (sum >= minn)
-                return;
-            minn = sum;
-            for (int i = 1; i <= n; i++)
-                for (int j = 1; j <= m; j++)
-                    ans[i][j] = f[i][j];
+            if (l1 < r1 && a[l1] == a[r1])
+            {
+                ++l1;
+                --r1;
+                res[i] = 'L';
+                res[2 * (n - 1) - i + 1] = 'L';
+            }
+            else
+            {
+                ++l1;
+                ++l2;
+                res[i] = 'L';
+                res[2 * (n - 1) - i + 1] = 'R';
+            }
         }
-        return;
+        else if (l2 <= r2 && ((l1 <= r1 && a[r2] == a[r1]) || (l2 < r2 && a[l2] == a[r2])))
+        {
+            if (l2 < r2 && a[l2] == a[r2])
+            {
+                ++l2;
+                --r2;
+                res[i] = 'R';
+                res[2 * (n - 1) - i + 1] = 'R';
+            }
+            else
+            {
+                --r2;
+                --r1;
+                res[i] = 'R';
+                res[2 * (n - 1) - i + 1] = 'L';
+            }
+        }
+        else
+        {
+            return 0;
+        }
     }
-    for (int i = 0; i <= 1; i++)
-    {
-        f[1][lie] = i;
-        dfs(lie + 1); // dfs第一行的修改方案
-    }
+    return 1;
 }
 int main()
 {
-    scanf("%d%d", &n, &m);
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= m; j++)
-            cin >> a[i][j];
-    dfs(1);
-    if (minn == 1000000009)
-        cout << "IMPOSSIBLE"; // 最小值没有改变，即不可能
-    else
+    int T = read();
+    while (T--)
     {
-        for (int i = 1; i <= n; i++)
+        n = read();
+        int p1 = -1, p2 = -1;
+        for (register int i = 1; i <= 2 * n; ++i)
+            a[i] = read();
+        for (register int i = 1; i <= 2 * n + 1; ++i)
+            res[i] = 0;
+        for (register int i = 2; i <= 2 * n; ++i)
         {
-            for (int j = 1; j <= m; j++)
-                cout << ans[i][j] << " ";
-            cout << endl;
+            if (a[1] == a[i])
+            {
+                p1 = i;
+                break;
+            }
+        }
+        for (register int i = 1; i < 2 * n; ++i)
+        {
+            if (a[2 * n] == a[i])
+            {
+                p2 = i;
+                break;
+            }
+        }
+        if (work(2, p1 - 1, p1 + 1, 2 * n))
+        {
+            printf("L%sL\n", res + 1);
+        }
+        else if (work(1, p2 - 1, p2 + 1, 2 * n - 1))
+        {
+            printf("R%sL\n", res + 1);
+        }
+        else
+        {
+            printf("-1\n");
         }
     }
+    return 0;
 }

@@ -1,94 +1,79 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, f[20][20], ans[20][20];
-int tmp[20][20], a[20][20], minx = INT_MAX;
-void dfs(int col)
+const int maxn = 5e5 + 5;
+int t, n, a[maxn];
+char res[maxn];
+bool check(int l1, int r1, int l2, int r2)
 {
-    if (col > m)
+    for (int i = 1; i < n; i++)
     {
-        for (int i = 1; i <= n; i++)
+        if (l1 <= r1 && ((l2 <= r2 && a[l1] == a[l2]) || (l1 < r1 && a[l1] == a[r1])))
         {
-            for (int j = 1; j <= m; j++)
-                tmp[i][j] = a[i][j];
-        }
-        for (int j = 1; j <= m; j++)
-        {
-            if (f[1][j]) // 处理第1行
+            if (l1 < r1 && a[l1] == a[r1])
             {
-                tmp[1][j] ^= 1, tmp[2][j] ^= 1, tmp[1][j + 1] ^= 1, tmp[1][j - 1] ^= 1;
+                l1++, r1--;
+                res[i] = 'L';
+                res[2 * (n - 1) - i + 1] = 'L';
+            }
+            else
+            {
+                l1++, l2++;
+                res[i] = 'L';
+                res[2 * (n - 1) - i + 1] = 'R';
             }
         }
-        for (int i = 2; i <= n; i++) // 处理第2~n行
+        else if (l2 <= r2 && ((l1 <= r1 && a[r2] == a[r1]) || (l2 < r2 && a[l2] == a[r2])))
         {
-            for (int j = 1; j <= m; j++)
+            if (l2 < r2 && a[l2] == a[r2])
             {
-                if (tmp[i - 1][j])
-                {
-                    f[i][j] = 1;
-                    tmp[i][j] ^= 1, tmp[i][j - 1] ^= 1, tmp[i][j + 1] ^= 1, tmp[i + 1][j] ^= 1, tmp[i - 1][j] ^= 1;
-                }
-                else
-                    f[i][j] = 0;
-                if (tmp[i - 1][j])
-                    return;
+                l2++, r2--;
+                res[i] = 'R';
+                res[2 * (n - 1) - i + 1] = 'R';
+            }
+            else
+            {
+                r1--, r2--;
+                res[i] = 'R';
+                res[2 * (n - 1) - i + 1] = 'L';
             }
         }
-        bool flag = 0;
-        for (int i = 1; i <= n; i++)
-        {
-            for (int j = 1; j <= m; j++)
-            {
-                if (tmp[i][j])
-                {
-                    flag = 1;
-                    break;
-                }
-            }
-        }
-        if (!flag)
-        {
-            int s = 0;
-            for (int i = 1; i <= n; i++)
-            {
-                for (int j = 1; j <= m; j++)
-                {
-                    if (f[i][j])
-                        s++;
-                }
-            }
-            if (s >= minx)
-                return;
-            minx = s;
-            for (int i = 1; i <= n; i++)
-            {
-                for (int j = 1; j <= m; j++)
-                    ans[i][j] = f[i][j];
-            }
-        }
-        return;
+        else
+            return 0;
     }
-    for (int i = 0; i <= 1; i++)
-    {
-        f[1][col] = i, dfs(col + 1);
-    }
+    return 1;
+}
+void solve()
+{
+    cin >> n;
+    int p1 = -1, p2 = -1;
+    for (int i = 1; i <= (n << 1); i++)
+        cin >> a[i];
+    memset(res, 0, sizeof(res));
+    for (int i = 2; i <= (n << 1); i++)
+        if (a[1] == a[i])
+        {
+            p1 = i;
+            break;
+        }
+    for (int i = 1; i < (n << 1); i++)
+        if (a[n << 1] == a[i])
+        {
+            p2 = i;
+            break;
+        }
+    if (check(2, p1 - 1, p1 + 1, n << 1))
+        cout << "L" << res + 1 << "L\n";
+    else if (check(1, p2 - 1, p2 + 1, (n << 1) - 1))
+        cout << "R" << res + 1 << "L\n";
+    else
+        cout << "-1\n";
 }
 int main()
 {
-    cin >> n >> m;
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= m; j++)
-            cin >> a[i][j];
-    dfs(1);
-    if (minx == INT_MAX)
-        cout << "IMPOSSIBLE";
-    else
-    {
-        for (int i = 1; i <= n; i++)
-        {
-            for (int j = 1; j <= m; j++)
-                cout << ans[i][j] << " ";
-            cout << "\n";
-        }
-    }
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cin >> t;
+    while (t--)
+        solve();
     return 0;
 }
