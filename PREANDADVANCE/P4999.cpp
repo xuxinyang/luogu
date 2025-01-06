@@ -2,12 +2,13 @@
 using namespace std;
 #define ll long long
 const int maxn = 20;
+const int maxm = 200;
 const int mod = 1e9+7;
-ll t, l, r, a[20], num, f[maxn][maxn];
+ll t, l, r, a[20], num, f[maxn][200];
 ll dfs(int pos, int sum, bool limit)
 {
     if (!pos) return sum;
-    if (!limit && f[pos][sum] >= 0) return f[pos][sum];
+    if (!limit && f[pos][sum] > 0) return f[pos][sum];
     int bound = limit ? a[pos] : 9;
     ll res = 0;
     for (int i = 0; i <= bound; i++)
@@ -27,10 +28,10 @@ ll solve(ll x)
 }
 int main()
 {
-    cin >> t;
     ios::sync_with_stdio(false);
-    memset(f, -1, sizeof(f));
     cin.tie(0);
+    cin >> t;
+    memset(f, -1, sizeof(f));
     while (t--)
     {
         cin >> l >> r;
