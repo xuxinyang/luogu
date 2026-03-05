@@ -86,7 +86,15 @@
     "titleBar.activeBackground": "#064A2F",
     "titleBar.activeForeground": "#F0FEF8",
     "minimap.background": "#00000000",
-    "scrollbar.shadow": "#00000000"
+    "scrollbar.shadow": "#00000000",
+    "titleBar.inactiveBackground": "#043521",
+    "titleBar.inactiveForeground": "#021E13",
+    "statusBar.background": "#05482D",
+    "statusBar.foreground": "#ECFEF7",
+    "statusBar.debuggingBackground": "#05482D",
+    "statusBar.debuggingForeground": "#ECFEF7",
+    "statusBar.noFolderBackground": "#05482D",
+    "statusBar.noFolderForeground": "#ECFEF7"
   },
   "files.associations": {
     "iostream": "cpp",
