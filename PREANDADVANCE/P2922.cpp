@@ -28,6 +28,7 @@ int find(bool p[])
     }
     return res - bo[u] + sum[u];
 }
+
 int main()
 {
     ios::sync_with_stdio(false);
